@@ -20,6 +20,13 @@ telegramBot.catch((err, ctx) => {
 
 // ── Khởi động bot ────────────────────────────────────────────
 export async function startTelegramBot(): Promise<void> {
+  // Đăng ký menu lệnh tự động gợi ý cho Telegram
+  await telegramBot.telegram.setMyCommands([
+    { command: 'nhac', description: 'Tạo nhắc nhở mới' },
+    { command: 'tasks', description: 'Xem danh sách đang chờ' },
+    { command: 'cancel', description: 'Hủy một nhắc nhở' },
+  ]).catch(err => log.error('Lỗi setMyCommands:', err));
+
   // Đăng ký commands & callbacks
   registerCommands(telegramBot);
   registerCallbacks(telegramBot);
