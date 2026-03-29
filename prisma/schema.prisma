@@ -1,0 +1,77 @@
+// ============================================================
+// BOT_Note — Database Schema
+// PostgreSQL via Prisma ORM (Prisma 7+)
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ──────────────────────────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────────────────────────
+
+enum TaskStatus {
+  PENDING   // Đang chờ đến giờ
+  SPAMMING  // Đang trong quá trình spam tin nhắn
+  SNOOZED   // Người dùng bấm "Báo lại sau"
+  DONE      // Đã hoàn thành
+  CANCELLED // Đã hủy bỏ
+}
+
+enum Priority {
+  GREEN  // 🟢 Nhẹ nhàng — 3 tin nhắn
+  YELLOW // 🟡 Quan trọng — 6 tin nhắn
+  RED    // 🔴 Sống còn — 10 tin nhắn
+}
+
+enum Platform {
+  TELEGRAM
+  DISCORD
+}
+
+// ──────────────────────────────────────────────────────────────
+// Models
+// ──────────────────────────────────────────────────────────────
+
+/// Người dùng trên từng nền tảng
+model User {
+  id         Int      @id @default(autoincrement())
+  platformId String   // Telegram userId hoặc Discord userId
+  platform   Platform
+  username   String?
+  firstName  String?
+  timezone   String   @default("Asia/Ho_Chi_Minh")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  tasks      Task[]
+
+  @@unique([platformId, platform])
+  @@map("users")
+}
+
+/// Công việc nhắc nhở
+model Task {
+  id          Int        @id @default(autoincrement())
+  content     String     // Nội dung nhắc nhở
+  scheduledAt DateTime   // Thời điểm kích hoạt spam
+  status      TaskStatus @default(PENDING)
+  priority    Priority   @default(YELLOW)
+  platform    Platform   // Nền tảng sẽ gửi (TELEGRAM / DISCORD)
+  chatId      String     // Channel hoặc Chat ID để gửi tin nhắn
+  spamCount   Int        @default(0) // Số tin nhắn đã spam
+  snoozeCount Int        @default(0) // Số lần người dùng bấm Snooze
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  completedAt DateTime?  // Thời điểm người dùng bấm Done
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, scheduledAt])
+  @@map("tasks")
+}
