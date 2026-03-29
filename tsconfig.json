@@ -12,15 +12,7 @@
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@config/*": ["src/config/*"],
-      "@database/*": ["src/database/*"],
-      "@platforms/*": ["src/platforms/*"],
-      "@services/*": ["src/services/*"],
-      "@utils/*": ["src/utils/*"]
-    }
+    "sourceMap": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
