@@ -11,6 +11,7 @@
 //   6. Khởi động Scheduler (cron job)
 // ============================================================
 
+import http from 'node:http';
 import { env } from './config/env';
 import { prisma } from './database/prisma';
 import { createLogger } from './utils/logger';
@@ -97,9 +98,19 @@ async function main(): Promise<void> {
   log.info('📌 Telegram: Tìm bot và gõ /start');
   log.info('📌 Discord: Gõ /nhac trong server');
 
-  // 5. Khởi động Telegram bot (long polling — dòng này sẽ KHÔNG resolve
-  //    cho đến khi bot bị dừng, nên phải để CUỐI CÙNG)
-  await startTelegramBot();
+  // 5. Khởi động Telegram bot (long polling)
+  // Lưu ý: Không dùng await ở đây nữa để code tiếp tục chạy xuống dưới và bật server HTTP
+  startTelegramBot().catch(err => log.error('Lỗi Telegram:', err));
+
+  // 6. Bật HTTP Server "giả" để Pass kiểm tra của Render/Koyeb (buộc phải có Port)
+  const PORT = process.env.PORT || 3000;
+  http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.write('BOT_Note is online and running 24/7!');
+    res.end();
+  }).listen(PORT, () => {
+    log.info(`🌐 HTTP Server đang chạy tại port ${PORT} (Dùng để uptime ping)`);
+  });
 }
 
 // ── Chạy ─────────────────────────────────────────────────────
