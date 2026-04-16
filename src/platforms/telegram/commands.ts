@@ -82,10 +82,29 @@ export function registerCommands(bot: Telegraf): void {
         return;
       }
 
-      // Tách time và content: lấy phần đầu tiên là thời gian
+      // Tách time và content thông qua duyệt ngược (greedy backward search)
+      // Giúp parse các khoảng thời gian chứa dấu cách (VD: "17/4 7h20")
       const parts = text.split(/\s+/);
-      const timeText = parts[0];
-      const content = parts.slice(1).join(' ');
+      let timeText = "";
+      let content = "";
+      let parsed = null;
+
+      for (let i = parts.length; i > 0; i--) {
+        const attemptText = parts.slice(0, i).join(' ');
+        const attemptParse = parseTime(attemptText);
+        if (attemptParse) {
+           timeText = attemptText;
+           content = parts.slice(i).join(' ');
+           parsed = attemptParse;
+           break;
+        }
+      }
+
+      // Nếu không parse được một chút ngày giờ nào nhưng text vẫn có, fallback lỗi thiếu content later
+      if (!parsed && parts.length > 0) {
+          timeText = parts[0];
+          content = parts.slice(1).join(' ');
+      }
 
       if (!content) {
         await ctx.reply(
@@ -96,8 +115,6 @@ export function registerCommands(bot: Telegraf): void {
         return;
       }
 
-      // Parse thời gian
-      const parsed = parseTime(timeText);
       if (!parsed) {
         await ctx.reply(
           '⚠️ Không hiểu thời gian này!\n\n' +

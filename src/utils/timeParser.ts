@@ -156,6 +156,15 @@ export function parseTime(text: string): ParsedTime | null {
   // 2. Thử chrono-node (cho các ngôn ngữ tự nhiên còn lại)
   const results = chrono.parse(text, new Date(), { forwardDate: true });
   if (results.length > 0) {
+    const consumedText = results[0].text;
+    
+    // Strict Length Check: Chrono thường nhặt ngày tháng bên trong một câu dài.
+    // Vì ta đang bôi chuỗi dài nhất có thể, chỉ chấp nhận kết quả chrono 
+    // nếu nó chiếm phần lớn dung lượng của chuỗi text được đưa vào (ít nhất 80%).
+    if (consumedText.length < text.trim().length * 0.8) {
+       return null;
+    }
+
     const date = results[0].start.date();
     return { date, display: formatDisplay(date) };
   }
