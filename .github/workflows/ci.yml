@@ -1,0 +1,34 @@
+name: CI / Build Test
+
+# Kích hoạt CI tự động kiểm duyệt mỗi khi có code mới đẩy lên nhánh main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_check:
+    name: 🏗️ Build & Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Setup Node.js (v20)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm' # Giúp lần chạy sau build nhanh hơn nhờ dùng cache
+
+    - name: 📦 Install Dependencies
+      run: npm ci # Dùng npm ci thay vì npm install để bám sát phiên bản chuẩn trong package-lock.json
+
+    - name: 🔧 Prisma Generate
+      # Sinh schema dùng cho Prisma Typescript
+      run: npx prisma generate
+
+    - name: 🔨 Build / Type-Check
+      # Chạy kiểm tra lỗi syntax & compile TS -> JS. Nếu có bất kỳ lỗi Typescript nào lọt ra, Node.js sẽ đánh failed bước này.
+      run: npm run build
