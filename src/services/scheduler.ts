@@ -66,7 +66,7 @@ async function tick(): Promise<void> {
 
 // ── Khởi động Scheduler ─────────────────────────────────────
 export function startScheduler(): void {
-  // Chạy mỗi 30 giây: */30 * * * * *
-  cron.schedule('*/30 * * * * *', tick);
-  log.success('⏰ Scheduler đã khởi động — quét DB mỗi 30 giây.');
+  // Chạy mỗi 1 phút: * * * * *
+  cron.schedule('* * * * *', tick);
+  log.success('⏰ Scheduler đã khởi động — quét DB mỗi 1 phút.');
 }

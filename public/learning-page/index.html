@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Học Tập - Learning Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            background: #f5f6fa;
+            padding: 20px;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            border: none;
+            background: white;
+            color: #667eea;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .learning-path {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .path-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .path-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #2d3436;
+            color: white;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>📚 Trang Học Tập</h1>
+            <p>Khai phá kiến thức mới mỗi ngày - Learning Journey Begins Here</p>
+        </header>
+
+        <nav class="nav">
+            <button class="nav-btn" onclick="showSection('home')">🏠 Trang chủ</button>
+            <button class="nav-btn" onclick="showSection('topics')">💡 Chủ đề học tập</button>
+            <button class="nav-btn" onclick="showSection('path')">📖 Lộ trình học</button>
+        </nav>
+
+        <div class="content">
+            <!-- Section: Home -->
+            <section id="home" class="section active">
+                <h2 style="color: #667eea; margin-bottom: 20px;">✨ Chào mừng đến với Trang Học Tập!</h2>
+                
+                <p style="color: #666; line-height: 1.8; margin-bottom: 30px;">
+                    Đây là không gian học tập trực tuyến của bạn, nơi bạn có thể:<br><br>
+                    <span class="highlight">📖 Khám phá</span> các chủ đề kiến thức đa dạng<br>
+                    <span class="highlight">🎯 Theo dõi</span> lộ trình học tập cá nhân hóa<br>
+                    <span class="highlight">🚀 Phát triển</span> kỹ năng mỗi ngày
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>📖 Học Tập</h3>
+                        <p>Khám phá hàng trăm chủ đề kiến thức từ cơ bản đến nâng cao. Mỗi bài học được thiết kế để giúp bạn phát triển hiểu biết một cách hiệu quả.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>🎯 Mục Tiêu</h3>
+                        <p>Xác định và theo dõi các mục tiêu học tập của bạn. Đặt cho mình những thách thức nhỏ mỗi ngày để đạt được tiến bộ bền vững.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>💡 Tài Nguyên</h3>
+                        <p>Tìm kiếm tài nguyên học tập phong phú: video, bài viết, bài kiểm tra và nhiều hơn nữa để hỗ trợ quá trình học của bạn.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3>👥 Cộng Đồng</h3>
+                        <p>Kết nối với những người khác có cùng sở thích. Chia sẻ kiến thức, đặt câu hỏi và học hỏi từ kinh nghiệm của nhau.</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="#topics" class="btn">🚀 Bắt đầu hành trình học tập</a>
+                </div>
+            </section>
+
+            <!-- Section: Topics -->
+            <section id="topics" class="section">
+                <h2 style="color: #667eea; margin-bottom: 20px;">💡 Các Chủ Đề Học Tập</h2>
+                
+                <p style="color: #666; line-height: 1.8; margin-bottom: 30px;">
+                    Khám phá các chủ đề đa dạng để nâng cao kiến thức của bạn:
+                </p>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>🧮 Toán Học</h3>
+                        <p>Đại số, hình học, giải tích, xác suất thống kê và các lĩnh vực toán học khác. Xây dựng nền tảng tư duy logic vững chắc.</p>
+                        <a href="#" class="btn" style="margin-top: 15px;">Khám phá</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>💻 Khoa Học Máy Tính</h3>
+                        <p>Programming, algorithms, data structures, web development, machine learning và công nghệ mới nổi.</p>
+                        <a href="#" class="btn" style="margin-top: 15px;">Khám phá</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>🔬 Khoa Học Tự Nhiên</h3>
+                        <p>Vật lý, hóa học, sinh học, thiên văn học và các nguyên tắc khoa học cơ bản.</p>
+                        <a href="#" class="btn" style="margin-top: 15px;">Khám phá</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>📝 Ngôn Ngữ & Văn Học</h3>
+                        <p>Cải thiện kỹ năng ngôn ngữ, văn học, viết sáng tạo và phân tích phê bình.</p>
+                        <a href="#" class="btn" style="margin-top: 15px;">Khám phá</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>🎨 Nghệ Thuật & Thiết Kế</h3>
+                        <p>Hội họa, thiết kế đồ họa, nhiếp ảnh và các hình thức nghệ thuật sáng tạo khác.</p>
+                        <a href="#" class="btn" style="margin-top: 15px;">Khám phá</a>
+                    </div>
+
+                    <div class="card">
+                        <h3>📊 Khoa Học Xã Hội</h3>
+                        <p>Lịch sử, địa lý, kinh tế học, tâm lý học và các lĩnh vực xã hội quan trọng.</p>
+                        <a href="#" class="btn" style="margin-top: 15px;">Khám phá</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Learning Path -->
+            <section id="path" class="section">
+                <h2 style="color: #667eea; margin-bottom: 20px;">📖 Lộ Trình Học Tập</h2>
+                
+                <p style="color: #666; line-height: 1.8; margin-bottom: 30px;">
+                    Theo dõi tiến trình học tập của bạn qua các cấp độ và chủ đề đã chọn:
+                </p>
+
+                <div class="learning-path">
+                    <h3 style="margin-bottom: 20px;">🎯 Lộ Trình Hiện Tại</h3>
+                    
+                    <div class="path-item">
+                        <div class="path-number">1</div>
+                        <div>
+                            <strong>Cơ Bản:</strong><br>
+                            Xây dựng nền tảng kiến thức, làm quen với phương pháp học tập hiệu quả.
+                        </div>
+                    </div>
+
+                    <div class="path-item" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+                        <div class="path-number" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">2</div>
+                        <div>
+                            <strong>Nâng Cao:</strong><br>
+                            Mở rộng kiến thức chuyên sâu, phát triển kỹ năng thực hành.
+                        </div>
+                    </div>
+
+                    <div class="path-item" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);">
+                        <div class="path-number" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">3</div>
+                        <div>
+                            <strong>Chuyên Gia:</strong><br>
+                            Áp dụng kiến thức vào thực tế, chia sẻ và truyền cảm hứng cho người khác.
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="#home" class="btn">← Quay lại trang chủ</a>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 Learning Page. Học tập mỗi ngày, tiến bộ từng bước!</p>
+            <p style="font-size: 0.9em; color: #95a5a6;">Designed with ❤️ for learners</p>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected section
+            const selected = document.getElementById(sectionId);
+            if (selected) {
+                selected.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
