@@ -16,8 +16,11 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient(): PrismaClient {
+  // Loại bỏ sslmode từ string để `pg` không ghi đè mất cấu hình ssl: rejectUnauthorized
+  const cleanUrl = env.DATABASE_URL.replace(/sslmode=[^&]+&?/g, '').replace(/[?&]$/, '');
+
   const pool = new Pool({
-    connectionString: env.DATABASE_URL,
+    connectionString: cleanUrl,
     ssl: { rejectUnauthorized: false }, // Cần thiết cho Supabase Pooler
   });
   const adapter = new PrismaPg(pool);
